@@ -5,22 +5,25 @@ import { connect } from "mobx-preact";
 class Controls extends Component {
   handleSignup = e => {
     e.preventDefault();
-    this.props.store.openModal("signup");
+    this.props.store.openModal("signup", this.signupButton);
   };
 
   handleLogin = e => {
     e.preventDefault();
-    this.props.store.openModal("login");
+    this.props.store.openModal("login", this.loginButton);
   };
 
   handleLogout = e => {
     e.preventDefault();
-    this.props.store.openModal("user");
+    this.props.store.openModal("user", this.logoutButton);
   };
 
   handleButton = e => {
     e.preventDefault();
-    this.props.store.openModal(this.props.store.user ? "user" : "login");
+    this.props.store.openModal(
+      this.props.store.user ? "user" : "login",
+      this.identityButton
+    );
   };
 
   render() {
@@ -32,6 +35,7 @@ class Controls extends Component {
           className="netlify-identity-button"
           href="#"
           onClick={this.handleButton}
+          ref={identityButton => (this.identityButton = identityButton)}
         >
           {this.props.text || (user ? "Log out" : "Log in")}
         </a>
@@ -52,6 +56,7 @@ class Controls extends Component {
               className="netlify-identity-logout"
               href="#"
               onClick={this.handleLogout}
+              ref={logoutButton => (this.logoutButton = logoutButton)}
             >
               Log out
             </a>
@@ -67,6 +72,7 @@ class Controls extends Component {
             className="netlify-identity-signup"
             href="#"
             onClick={this.handleSignup}
+            ref={signupButton => (this.signupButton = signupButton)}
           >
             Sign up
           </a>
@@ -76,6 +82,7 @@ class Controls extends Component {
             className="netlify-identity-login"
             href="#"
             onClick={this.handleLogin}
+            ref={loginButton => (this.loginButton = loginButton)}
           >
             Log in
           </a>

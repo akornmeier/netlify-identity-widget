@@ -254,8 +254,12 @@
 		netlifyIdentity.on("login", user => console.log(user));
 		netlifyIdentity.on("logout", () => console.log("Logged out"));
 		netlifyIdentity.on("error", err => console.error("Logged out"));
-		netlifyIdentity.on("open", () => console.log("Widget opened"));
-		netlifyIdentity.on("close", () => console.log("Widget closed"));
+		netlifyIdentity.on("open", (e) => {
+			document.body.querySelector(".main").setAttribute("aria-hidden", true);
+		});
+		netlifyIdentity.on("close", () => {
+			document.body.querySelector(".main").removeAttribute("aria-hidden");
+		});
 </script>
 </head>
 <body>

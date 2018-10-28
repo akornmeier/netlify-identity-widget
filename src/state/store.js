@@ -15,7 +15,8 @@ const store = observable({
   modal: {
     page: "login",
     isOpen: false,
-    logo: true
+    logo: true,
+    triggerElement: null
   }
 });
 
@@ -256,9 +257,10 @@ store.requestPasswordRecovery = action(function requestPasswordRecovery(email) {
     .catch(store.setError);
 });
 
-store.openModal = action(function open(page) {
+store.openModal = action(function open(page, triggerElement) {
   store.modal.page = page;
   store.modal.isOpen = true;
+  store.modal.triggerElement = triggerElement;
 });
 
 store.closeModal = action(function close() {
@@ -266,6 +268,7 @@ store.closeModal = action(function close() {
   store.error = null;
   store.message = null;
   store.saving = false;
+  store.modal.triggerElement.focus();
 });
 
 export default store;

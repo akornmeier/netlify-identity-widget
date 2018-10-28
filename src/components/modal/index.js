@@ -9,6 +9,10 @@ function formatError(error) {
 }
 
 export default class Modal extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   handleClose = e => {
     e.preventDefault();
     this.props.onClose();
@@ -23,6 +27,31 @@ export default class Modal extends Component {
     this.props.onPage(page);
   };
 
+  keypressHandler = e => {
+    const ESCAPE_KEY = 27;
+    const TAB_KEY = 9;
+    const { target, which, shiftKey } = e;
+    const { isOpen } = this.props;
+    const focusables = Array.from(
+      target.ownerDocument.body.querySelectorAll(".btn, .formControl")
+    );
+    const index = focusables.findIndex(element => element === target);
+    if (isOpen && which === ESCAPE_KEY) {
+      e.preventDefault();
+      this.handleClose(e);
+    } else if (isOpen && which === TAB_KEY) {
+      if (index === 0 && shiftKey) {
+        e.preventDefault();
+        focusables[focusables.length - 1].focus();
+      } else if (index + 1 === focusables.length && !shiftKey) {
+        e.preventDefault();
+        focusables[0].focus();
+      }
+    }
+  };
+
+  focus = () => this.closeButton.focus();
+
   render() {
     const {
       page,
@@ -36,19 +65,33 @@ export default class Modal extends Component {
       logo
     } = this.props;
     const hidden = loading || !isOpen;
+    if (!hidden) {
+      this.focus();
+    }
     return (
       <div
         className="modalContainer"
-        role="dialog"
         aria-hidden={`${hidden}`}
         onClick={this.handleClose}
       >
         <div
           className={`modalDialog${loading ? " visuallyHidden" : ""}`}
           onClick={this.blockEvent}
+          role="dialog"
+          aria-hidden={`${hidden}`}
+          aria-label={
+            devSettings
+              ? "Development Settings"
+              : showSignup ? "Signup / Login" : "Login"
+          }
+          onKeyDown={this.keypressHandler}
         >
           <div className="modalContent">
-            <button onclick={this.handleClose} className="btn btnClose">
+            <button
+              onclick={this.handleClose}
+              className="btn btnClose focusable"
+              ref={closeButton => (this.closeButton = closeButton)}
+            >
               <span className="visuallyHidden">Close</span>
             </button>
             {showHeader && (
