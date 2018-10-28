@@ -87,7 +87,7 @@ store.login = action(function login(email, password) {
 });
 
 store.externalLogin = action(function externalLogin(provider) {
-  // store.startAction();
+  store.startAction();
   store.error = null;
   store.message = null;
   const url = store.invite_token
