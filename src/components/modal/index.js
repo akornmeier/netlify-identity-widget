@@ -33,7 +33,7 @@ export default class Modal extends Component {
     const { target, which, shiftKey } = e;
     const { isOpen } = this.props;
     const focusables = Array.from(
-      target.ownerDocument.body.querySelectorAll(".btn, .formControl")
+      target.ownerDocument.body.querySelectorAll(".btn, .formControl, .btnLink")
     );
     const index = focusables.findIndex(element => element === target);
     if (isOpen && which === ESCAPE_KEY) {
