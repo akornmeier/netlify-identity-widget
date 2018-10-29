@@ -14,6 +14,7 @@ export default class UserForm extends Component {
 
   handleLogin = e => {
     e.preventDefault();
+    console.log(e);
     this.props.onSubmit(this.state);
   };
 
